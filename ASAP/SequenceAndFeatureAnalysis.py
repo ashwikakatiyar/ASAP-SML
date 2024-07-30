@@ -5,7 +5,7 @@ import scipy.stats as sta
 from sklearn.ensemble import ExtraTreesClassifier
 from sklearn import svm
 from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
-from scipy import interp
+from scipy.interpolate import interp1d
 from sklearn.metrics import roc_curve, auc
 import numpy as np
 import pandas as pd
@@ -115,7 +115,7 @@ def normalize(dist):
 def Draw_heatmap(size, dist, name, DatasetSize):
     rc('font', size=20)  
     #ticks bold
-    rcParams['text.latex.preamble'] = [r'\usepackage{sfmath} \boldmath']
+    rcParams['text.latex.preamble'] = r'\usepackage{sfmath} \boldmath'
     # figure size
     fig, ax = plt.subplots(figsize=(10, 7))
     # heatmap with color bar
@@ -613,15 +613,15 @@ def calculate_auc(X, Y):
         clf_adaboost = clf_adaboost.fit(X_train, Y_train)
 
         fpr_svm, tpr_svm, _ = roc_curve(Y_test, clf_svm.predict_proba(X_test)[:, 1], pos_label=1)
-        tpr_svms.append(interp(mean_fpr, fpr_svm, tpr_svm))
+        tpr_svms.append(interp1d(mean_fpr, fpr_svm, tpr_svm))
         tpr_svms[-1][0] = 0.0
 
         fpr_rf, tpr_rf, _ = roc_curve(Y_test, clf_randomforest.predict_proba(X_test)[:, 1], pos_label=1)
-        tpr_rfs.append(interp(mean_fpr, fpr_rf, tpr_rf))
+        tpr_rfs.append(interp1d(mean_fpr, fpr_rf, tpr_rf))
         tpr_rfs[-1][0] = 0.0
 
         fpr_ada, tpr_ada, _ = roc_curve(Y_test, clf_adaboost.predict_proba(X_test)[:, 1], pos_label=1)
-        tpr_adas.append(interp(mean_fpr, fpr_ada, tpr_ada))
+        tpr_adas.append(interp1d(mean_fpr, fpr_ada, tpr_ada))
         tpr_adas[-1][0] = 0.0
 
     mean_tpr_svm = np.mean(tpr_svms, axis=0)
@@ -683,15 +683,15 @@ def Classify(X, Y, roc_name):
         clf_adaboost = clf_adaboost.fit(X_train, Y_train)
 
         fpr_svm, tpr_svm, _ = roc_curve(Y_test, clf_svm.predict_proba(X_test)[:, 1], pos_label=1)
-        tpr_svms.append(interp(mean_fpr, fpr_svm, tpr_svm))
+        tpr_svms.append(interp1d(mean_fpr, fpr_svm, tpr_svm))
         tpr_svms[-1][0] = 0.0
 
         fpr_rf, tpr_rf, _ = roc_curve(Y_test, clf_randomforest.predict_proba(X_test)[:, 1], pos_label=1)
-        tpr_rfs.append(interp(mean_fpr, fpr_rf, tpr_rf))
+        tpr_rfs.append(interp1d(mean_fpr, fpr_rf, tpr_rf))
         tpr_rfs[-1][0] = 0.0
 
         fpr_ada, tpr_ada, _ = roc_curve(Y_test, clf_adaboost.predict_proba(X_test)[:, 1], pos_label=1)
-        tpr_adas.append(interp(mean_fpr, fpr_ada, tpr_ada))
+        tpr_adas.append(interp1d(mean_fpr, fpr_ada, tpr_ada))
         tpr_adas[-1][0] = 0.0
 
     mean_tpr_svm = np.mean(tpr_svms, axis=0)
